@@ -16,12 +16,15 @@ Each goroutine waits in a loop and pulls a function from the channel to execute 
 Use Case: Worker pool — multiple workers handle tasks from a shared source.
 
 🔄 Why 4 Iterations?
+
 This loop is spawning four workers, creating a basic concurrency model where multiple goroutines can process tasks in parallel. It’s a common approach to avoid overwhelming system resources while allowing parallelism. You can adjust the number depending on your workload or CPU cores.
 
 📦 Why a Buffered Channel of Size 10?
+
 The buffer lets you queue up to 10 function tasks without blocking the main goroutine. This way, your program can start putting tasks into the channel even if not all workers are immediately ready. It’s a way to smooth out work distribution and avoid backpressure early on.
 
 ❌ Why "HERE1" Might Not Be Printed
+
 Several possibilities could be at play here:
 
 Main goroutine exits early:
@@ -33,3 +36,7 @@ If the main goroutine ends before any worker pulls and runs f(), "HERE1" may nev
 Race condition:
 
 Your workers depend on being scheduled quickly enough to consume the channel before main exits.
+
+✅ How to Fix That
+
+View code_fix.go
